@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "declaration": true,
+    "downlevelIteration": true,
+    "lib": ["es2019", "DOM", "ES6", "DOM.Iterable", "ScriptHost"],
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+  },
+  "exclude": ["node_modules", "**/*/lib", "**/*/dist"]
+}
