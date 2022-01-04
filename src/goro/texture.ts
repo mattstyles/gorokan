@@ -13,6 +13,16 @@ function getTexture(x: number, y: number): Texture {
   )
 }
 
+export function get(name: string): Texture {
+  const texture = textures.get(name)
+
+  if (texture == null) {
+    throw new Error(`Unrecognised texture name: ${name}`)
+  }
+
+  return texture
+}
+
 textures.set('goro-hungry', getTexture(0, 0))
 textures.set('goro-free', getTexture(1, 0))
 
