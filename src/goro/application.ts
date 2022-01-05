@@ -7,11 +7,13 @@ import {ref} from 'valtio'
 import {state} from '../state/main'
 import {get} from './texture'
 import {Tilemap} from './tilemap'
+import {keyEvents} from './keyEvents'
 
 export class Gorokan {
   app: Application
   camera: Camera
   tilemap: Tilemap
+  keyhandlerDispose: () => void
 
   constructor({canvas}: {canvas: HTMLCanvasElement}) {
     const tileSize = 30
@@ -50,6 +52,10 @@ export class Gorokan {
 
     this.app.ticker.add(this.render)
 
+    this.keyhandlerDispose = keyEvents.observe((event) => {
+      console.log('app key handler')
+    })
+
     const pool = SpritePool.of({
       length: 100,
       container: container,
@@ -68,6 +74,7 @@ export class Gorokan {
     this.app.destroy(true, {
       children: true,
     })
+    this.keyhandlerDispose()
   }
 
   render = () => {

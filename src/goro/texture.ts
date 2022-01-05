@@ -13,7 +13,12 @@ function getTexture(x: number, y: number): Texture {
   )
 }
 
-export function get(name: string): Texture {
+export function get(name: string): Texture
+export function get(name: number): Texture
+export function get(name: string | number): Texture {
+  if (typeof name === 'number') {
+    name = getTextureById(name)
+  }
   const texture = textures.get(name)
 
   if (texture == null) {
@@ -21,6 +26,29 @@ export function get(name: string): Texture {
   }
 
   return texture
+}
+
+const map = [
+  'goro-hungry',
+  'goro-free',
+  'food-0',
+  'food-1',
+  'food-2',
+  'food-3',
+  'food-4',
+  'food-5',
+  'food-6',
+  'food-7',
+  'food-8',
+  'food-9',
+  'wall',
+  'floor-1',
+  'floor-2',
+  'floor-red-1',
+  'floor-red-2',
+]
+function getTextureById(id: number): string {
+  return map[id]
 }
 
 textures.set('goro-hungry', getTexture(0, 0))
