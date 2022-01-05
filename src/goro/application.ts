@@ -35,7 +35,7 @@ export class Gorokan {
     this.app.stage.addChild(container)
 
     const pool = SpritePool.of({
-      length: 1e4,
+      length: tw * th,
       container: container,
     })
 
