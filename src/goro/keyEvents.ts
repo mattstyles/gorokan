@@ -15,7 +15,7 @@ class Stack<T> {
     return this.data.shift()
   }
 
-  get(): T | null {
+  peek(): T | null {
     return this.data[0] ?? null
   }
 }
@@ -28,8 +28,8 @@ class KeyEvents {
   constructor() {
     this.stream = keys()
 
-    this.stream.observe((event) => {
-      const observer = this.observers.get()
+    this.stream.observe((event: any) => {
+      const observer = this.observers.peek()
       observer(event)
     })
   }

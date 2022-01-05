@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@raid/streams': ^6.0.0
+  '@raid/streams': ^6.1.1
   '@types/react': ^17.0.37
   '@types/react-dom': ^17.0.11
   bitecs: ^0.3.34
@@ -18,7 +18,7 @@ specifiers:
   valtio: ^1.2.7
 
 dependencies:
-  '@raid/streams': 6.0.0
+  '@raid/streams': 6.1.1
   bitecs: 0.3.34
   classnames: 2.3.1
   mathutil: 4.1.0
@@ -1474,8 +1474,8 @@ packages:
       url: 0.11.0
     dev: false
 
-  /@raid/streams/6.0.0:
-    resolution: {integrity: sha512-hVybFyMJ974kn6xq8JDK9cyzsDaSabvgWVBd9xeS8d8jxkJlORCksoQt0veZJX2q4YeW1AeSIYnrYWcvCHcjmQ==}
+  /@raid/streams/6.1.1:
+    resolution: {integrity: sha512-Me+Elny5ynuCY37ioZr6Z68i28iotmiTF4HK9EZ40ALk7FPXg7xOdtPq9IthTHYGqrumI+zhnPc+55kB9jqiVA==}
     dependencies:
       most: 1.9.0
       raf-stream: 3.0.0

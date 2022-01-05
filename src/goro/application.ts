@@ -52,7 +52,7 @@ export class Gorokan {
 
     this.app.ticker.add(this.render)
 
-    this.keyhandlerDispose = keyEvents.observe((event) => {
+    this.keyhandlerDispose = keyEvents.observe((event: any) => {
       console.log('app key handler')
     })
 
