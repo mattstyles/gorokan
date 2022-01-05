@@ -96,6 +96,11 @@ function generateDummyMap(width: number, height: number) {
         continue
       }
 
+      if (Math.random() > 0.85) {
+        data.push(TileType.void)
+        continue
+      }
+
       data.push(Math.random() > 0.75 ? TileType.floor : TileType.wall)
     }
   }
