@@ -5,13 +5,13 @@ import {SpritePool} from 'pixi-spritepool'
 
 import {get} from './texture'
 
-enum TileType {
+export enum TileType {
   void = 0,
   wall = 1,
   floor = 2,
 }
 
-type Tile = number
+export type Tile = number
 
 export class Tilemap {
   width: number
@@ -91,15 +91,22 @@ function generateDummyMap(width: number, height: number) {
   const data: Tile[] = []
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
+      // Perimeter wall
       if (x === 0 || x === width - 1 || y === 0 || y === height - 1) {
         data.push(TileType.wall)
         continue
       }
 
-      if (Math.random() > 0.85) {
-        data.push(TileType.void)
+      // Open section for testing
+      if (x > 0 && x < 12 && y > 0 && y < 8) {
+        data.push(TileType.floor)
         continue
       }
+
+      // if (Math.random() > 0.85) {
+      //   data.push(TileType.void)
+      //   continue
+      // }
 
       data.push(Math.random() > 0.75 ? TileType.floor : TileType.wall)
     }

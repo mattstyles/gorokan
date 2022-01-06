@@ -1,23 +1,29 @@
+import type {IWorld, System} from 'bitecs'
+
 import {Application, Container} from 'pixi.js'
 import {Camera} from 'pixi-holga'
-import {SpritePool} from 'pixi-spritepool'
 import {Point} from 'mathutil'
 import {ref} from 'valtio'
 import {actions} from '@raid/streams/keys'
-import {createWorld} from 'bitecs'
+import {createWorld, addComponent} from 'bitecs'
 
 import {state} from '../state/main'
-import {get} from './texture'
 import {Tilemap} from './tilemap'
 import {keyEvents} from './keyEvents'
 import {createRenderingSystem} from './systems/rendering'
+import {createMovementSystem} from './systems/movement'
 import {createGoro} from './entities/goro'
+import {createYuji} from './entities/yuji'
+import {createFood} from './entities/food'
+import {Movement} from './components/position'
 
 export class Gorokan {
   app: Application
   camera: Camera
   tilemap: Tilemap
-  keyhandlerDispose: () => void
+  cleanup: Set<() => void> = new Set()
+  world: IWorld
+  systems: Map<string, System> = new Map()
 
   constructor({canvas}: {canvas: HTMLCanvasElement}) {
     const tileSize = 30
@@ -27,6 +33,9 @@ export class Gorokan {
     const canvasWidth = tw * tileSize
     const canvasHeight = th * tileSize
 
+    /**
+     * Staging (screen)
+     */
     this.app = new Application({
       resolution: window.devicePixelRatio,
       backgroundColor: 0x293042,
@@ -38,13 +47,25 @@ export class Gorokan {
     })
 
     state.app = ref(this.app)
+    this.cleanup.add(() => {
+      console.log('disposing app')
+      this.app.destroy(true, {
+        children: true,
+      })
+    })
 
     const container = new Container()
     this.app.stage.addChild(container)
 
+    /**
+     * Tilemap representation
+     */
     this.tilemap = new Tilemap({width: tw, height: th})
     this.tilemap.pool.attach(container)
 
+    /**
+     * Camera
+     */
     const zoom = tileSize / textureSize
     this.camera = Camera.of({
       position: Point.of(tw * 0.5, th * 0.5),
@@ -53,53 +74,86 @@ export class Gorokan {
       projection: Point.of(textureSize, textureSize),
     })
 
+    /**
+     * ECS
+     */
+    this.world = createWorld()
+
+    createGoro({position: Point.of(1, 1), world: this.world})
+    const yuji = createYuji({position: Point.of(4, 4), world: this.world})
+    createFood({position: Point.of(5, 4), texture: 2, world: this.world})
+
+    this.systems.set(
+      'rendering',
+      createRenderingSystem({
+        camera: this.camera,
+        container,
+      })
+    )
+
+    const movementSystem = createMovementSystem({tiles: this.tilemap})
+
+    /**
+     * Events
+     */
     this.app.ticker.add(this.render)
 
-    this.keyhandlerDispose = keyEvents.observe((event) => {
+    /**
+     * Input
+     */
+    const dispose = keyEvents.observe((event) => {
       if (event.type === actions.keydown) {
         if (event.payload.key === '<left>') {
-          console.log('lefty loosey')
+          addComponent(this.world, Movement, yuji)
+          Movement.x[yuji] = -1
+          Movement.y[yuji] = 0
+          movementSystem(this.world)
+        }
+
+        if (event.payload.key === '<right>') {
+          addComponent(this.world, Movement, yuji)
+          Movement.x[yuji] = 1
+          Movement.y[yuji] = 0
+          movementSystem(this.world)
+        }
+
+        if (event.payload.key === '<up>') {
+          addComponent(this.world, Movement, yuji)
+          Movement.x[yuji] = 0
+          Movement.y[yuji] = -1
+          movementSystem(this.world)
+        }
+
+        if (event.payload.key === '<down>') {
+          addComponent(this.world, Movement, yuji)
+          Movement.x[yuji] = 0
+          Movement.y[yuji] = 1
+          movementSystem(this.world)
         }
       }
     })
-
-    const pool = SpritePool.of({
-      length: 100,
-      container: container,
-    })
-
-    const sprite = pool.get(0)
-    sprite.visible = true
-    sprite.texture = get('goro-hungry')
-    const position = Point.of(0, 0)
-    const pos = this.camera.applyProjection(position)
-    sprite.position.set(pos.x, pos.y)
-    sprite.scale.set(this.camera.scale.x, this.camera.scale.y)
-
-    const renderingSystem = createRenderingSystem({
-      camera: this.camera,
-      container,
-    })
-
-    const world = createWorld()
-
-    const goro = createGoro({position: Point.of(2, 2), world: world})
-
-    renderingSystem(world)
+    this.cleanup.add(dispose)
   }
 
+  /**
+   * Cleanup for the main class
+   */
   release() {
-    this.app.destroy(true, {
-      children: true,
-    })
-    this.keyhandlerDispose()
+    this.cleanup.forEach((fn) => fn())
   }
 
+  /**
+   * Render function
+   */
   render = () => {
+    // Render tilemap
     this.tilemap.renderMap((x, y, _, sprite) => {
       const projection = this.camera.applyProjection(Point.of(x, y))
       sprite.position.set(projection.x, projection.y)
       sprite.scale.set(this.camera.scale.x, this.camera.scale.y)
     })
+
+    // Render ECS
+    this.systems.get('rendering')(this.world)
   }
 }
