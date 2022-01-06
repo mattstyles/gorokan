@@ -22,6 +22,7 @@ export class SpritePool {
     }
 
     const sprite = this.pool.pop()
+    sprite.visible = true
     const id = this.count
     this.count = this.count + 1
     this.used.set(id, sprite)
@@ -29,6 +30,10 @@ export class SpritePool {
       id,
       sprite,
     }
+  }
+
+  find(id: number): Sprite | null {
+    return this.used.get(id)
   }
 
   release(id: number): boolean {

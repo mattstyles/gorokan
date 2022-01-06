@@ -3,11 +3,15 @@ import {Camera} from 'pixi-holga'
 import {SpritePool} from 'pixi-spritepool'
 import {Point} from 'mathutil'
 import {ref} from 'valtio'
+import {actions} from '@raid/streams/keys'
+import {createWorld} from 'bitecs'
 
 import {state} from '../state/main'
 import {get} from './texture'
 import {Tilemap} from './tilemap'
 import {keyEvents} from './keyEvents'
+import {createRenderingSystem} from './systems/rendering'
+import {createGoro} from './entities/goro'
 
 export class Gorokan {
   app: Application
@@ -28,7 +32,6 @@ export class Gorokan {
       backgroundColor: 0x293042,
       antialias: true,
       autoDensity: true,
-      // resizeTo: window,
       width: canvasWidth,
       height: canvasHeight,
       view: canvas,
@@ -52,8 +55,12 @@ export class Gorokan {
 
     this.app.ticker.add(this.render)
 
-    this.keyhandlerDispose = keyEvents.observe((event: any) => {
-      console.log('app key handler')
+    this.keyhandlerDispose = keyEvents.observe((event) => {
+      if (event.type === actions.keydown) {
+        if (event.payload.key === '<left>') {
+          console.log('lefty loosey')
+        }
+      }
     })
 
     const pool = SpritePool.of({
@@ -68,6 +75,17 @@ export class Gorokan {
     const pos = this.camera.applyProjection(position)
     sprite.position.set(pos.x, pos.y)
     sprite.scale.set(this.camera.scale.x, this.camera.scale.y)
+
+    const renderingSystem = createRenderingSystem({
+      camera: this.camera,
+      container,
+    })
+
+    const world = createWorld()
+
+    const goro = createGoro({position: Point.of(2, 2), world: world})
+
+    renderingSystem(world)
   }
 
   release() {

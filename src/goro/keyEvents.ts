@@ -24,9 +24,11 @@ type Observer = (event: any) => void
 class KeyEvents {
   observers: Stack<Observer> = new Stack()
   stream: any
+  keys: Map<string, number>
 
   constructor() {
-    this.stream = keys()
+    this.keys = new Map<string, number>()
+    this.stream = keys({keys: this.keys})
 
     this.stream.observe((event: any) => {
       const observer = this.observers.peek()
