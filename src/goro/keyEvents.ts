@@ -4,21 +4,7 @@
 
 import {keys} from '@raid/streams/keys'
 
-class Stack<T> {
-  data: T[] = []
-
-  push(item: T) {
-    this.data.unshift(item)
-  }
-
-  pop(): T {
-    return this.data.shift()
-  }
-
-  peek(): T | null {
-    return this.data[0] ?? null
-  }
-}
+import {Stack} from './list'
 
 type Observer = (event: any) => void
 class KeyEvents {

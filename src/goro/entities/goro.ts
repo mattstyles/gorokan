@@ -7,6 +7,8 @@ import {Renderable} from '../components/renderable'
 import {Sprite} from '../components/sprite'
 import {Texture} from '../components/texture'
 import {Position} from '../components/position'
+import {Collider} from '../components/collider'
+import {Consumer} from '../components/consumable'
 
 type GoroProps = {
   world: IWorld
@@ -24,6 +26,9 @@ export function createGoro({position, world}: GoroProps) {
   addComponent(world, Position, entity)
   Position.x[entity] = position.x
   Position.y[entity] = position.y
+
+  addComponent(world, Collider, entity)
+  addComponent(world, Consumer, entity)
 
   return entity
 }

@@ -82,6 +82,7 @@ export class Gorokan {
     createGoro({position: Point.of(1, 1), world: this.world})
     const yuji = createYuji({position: Point.of(4, 4), world: this.world})
     createFood({position: Point.of(5, 4), texture: 2, world: this.world})
+    createFood({position: Point.of(8, 4), texture: 5, world: this.world})
 
     this.systems.set(
       'rendering',

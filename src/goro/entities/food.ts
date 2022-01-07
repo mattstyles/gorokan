@@ -8,6 +8,8 @@ import {Sprite} from '../components/sprite'
 import {Texture} from '../components/texture'
 import {Position} from '../components/position'
 import {Pushable} from '../components/pushable'
+import {Collider} from '../components/collider'
+import {Consumable} from '../components/consumable'
 
 type FoodProps = {
   world: IWorld
@@ -19,7 +21,6 @@ export function createFood({position, texture, world}: FoodProps) {
 
   addComponent(world, Renderable, entity)
   addComponent(world, Sprite, entity)
-  addComponent(world, Pushable, entity)
 
   addComponent(world, Texture, entity)
   Texture.id[entity] = texture
@@ -27,6 +28,10 @@ export function createFood({position, texture, world}: FoodProps) {
   addComponent(world, Position, entity)
   Position.x[entity] = position.x
   Position.y[entity] = position.y
+
+  addComponent(world, Collider, entity)
+  addComponent(world, Consumable, entity)
+  addComponent(world, Pushable, entity)
 
   return entity
 }
