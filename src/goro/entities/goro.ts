@@ -32,3 +32,25 @@ export function createGoro({position, world}: GoroProps) {
 
   return entity
 }
+
+type GoroFProps = {
+  world: IWorld
+  position: Point
+}
+export function createGoroFulfilled({position, world}: GoroFProps) {
+  const entity = addEntity(world)
+
+  addComponent(world, Renderable, entity)
+  addComponent(world, Sprite, entity)
+
+  addComponent(world, Texture, entity)
+  Texture.id[entity] = 1
+
+  addComponent(world, Position, entity)
+  Position.x[entity] = position.x
+  Position.y[entity] = position.y
+
+  addComponent(world, Collider, entity)
+
+  return entity
+}

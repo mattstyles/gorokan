@@ -5,7 +5,7 @@ import {Camera} from 'pixi-holga'
 import {Point} from 'mathutil'
 import {ref} from 'valtio'
 import {actions} from '@raid/streams/keys'
-import {createWorld, addComponent} from 'bitecs'
+import {addComponent, createWorld} from 'bitecs'
 
 import {state} from '../state/main'
 import {Tilemap} from './tilemap'
@@ -79,7 +79,7 @@ export class Gorokan {
      */
     this.world = createWorld()
 
-    createGoro({position: Point.of(1, 1), world: this.world})
+    createGoro({position: Point.of(6, 4), world: this.world})
     const yuji = createYuji({position: Point.of(4, 4), world: this.world})
     createFood({position: Point.of(5, 4), texture: 2, world: this.world})
     createFood({position: Point.of(8, 4), texture: 5, world: this.world})

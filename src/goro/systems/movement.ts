@@ -1,5 +1,11 @@
 import type {System, IWorld} from 'bitecs'
-import {defineSystem, defineQuery, removeComponent, hasComponent} from 'bitecs'
+import {
+  defineSystem,
+  defineQuery,
+  removeComponent,
+  hasComponent,
+  removeEntity,
+} from 'bitecs'
 import {Point} from 'mathutil'
 
 import {Queue} from '../list'
@@ -7,8 +13,10 @@ import {Tilemap, TileType} from '../tilemap'
 import {Position, Movement} from '../components/position'
 import {Collider} from '../components/collider'
 import {Pushable} from '../components/pushable'
+import {Texture} from '../components/texture'
 import {Yuji} from '../components/types'
 import {Consumable, Consumer} from '../components/consumable'
+import {createGoroFulfilled} from '../entities/goro'
 
 enum EventTypes {
   Push,
@@ -199,7 +207,21 @@ function handlePushEvent(
     if (pos.equals(pushPosition)) {
       console.log('Pushed food into a Goro, yay')
 
-      // @TODO handle removing Food, moving Yuji, updating the Goro
+      // For some reason removing and entering in the same tick does not work
+      removeEntity(world, target)
+
+      // So rather than create a new entity, for now we'll adapt the existing one
+      Texture.id[id] = 1
+      removeComponent(world, Consumer, id)
+
+      performMovement(
+        origin,
+        Point.of(
+          Position.x[origin] + Movement.x[origin],
+          Position.y[origin] + Movement.y[origin]
+        ),
+        world
+      )
       return
     }
   }
