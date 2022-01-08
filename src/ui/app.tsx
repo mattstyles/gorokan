@@ -21,6 +21,8 @@ export function App() {
       </Spread>
       <Spacer space={Spacer.space.small} />
       <Canvas onReady={onReady} />
+      <Spacer space={Spacer.space.small} />
+      {snap.levelText.length && <Text>{snap.levelText}</Text>}
     </Page>
   )
 }

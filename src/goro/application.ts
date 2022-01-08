@@ -76,7 +76,13 @@ export class Gorokan {
     /**
      * Load level
      */
-    const {genTiles, genEntities, startPosition, goros} = getLevelData({
+    const {
+      genTiles,
+      genEntities,
+      startPosition,
+      goros,
+      levelText,
+    } = getLevelData({
       level: state.currentLevel,
     })
     this.tilemap = new Tilemap({
@@ -89,6 +95,7 @@ export class Gorokan {
     const yuji = createYuji({position: startPosition, world: this.world})
     genEntities(this.world)
     state.goroToFeed = goros
+    state.levelText = levelText
 
     /**
      * ECS System init

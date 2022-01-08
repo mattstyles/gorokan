@@ -7,6 +7,7 @@ export type MainState = {
   goroToFeed: number
   steps: number
   currentLevel: number
+  levelText: string
 }
 
 export const state = proxy<MainState>({
@@ -15,4 +16,5 @@ export const state = proxy<MainState>({
   goroToFeed: 0,
   steps: 0,
   currentLevel: 2,
+  levelText: '',
 })

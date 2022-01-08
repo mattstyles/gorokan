@@ -22,6 +22,7 @@ type LevelOutput = {
   genEntities: (world: IWorld) => void
   startPosition: Point
   goros: number
+  levelText: string
 }
 export function getLevelData({level}: LevelInput): LevelOutput {
   const spec = getLevel(level)
@@ -72,6 +73,7 @@ export function getLevelData({level}: LevelInput): LevelOutput {
     },
     startPosition: startPosition.position,
     goros: numGoro,
+    levelText: spec.meta.text,
   }
 }
 
