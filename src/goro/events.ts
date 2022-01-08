@@ -2,6 +2,7 @@ import EventEmitter from 'eventemitter3'
 
 export enum GlobalEventType {
   FeedGoro = 'feedGoro',
+  TakeStep = 'takeStep',
 }
 export type GlobalEvent =
   | {
@@ -9,8 +10,8 @@ export type GlobalEvent =
       payload?: null
     }
   | {
-      type: 'something else'
-      payload: number
+      type: GlobalEventType.TakeStep
+      payload?: null
     }
 
 const events = new EventEmitter()

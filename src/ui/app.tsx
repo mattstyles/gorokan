@@ -14,9 +14,10 @@ export function App() {
   return (
     <Page>
       <Spacer space={Spacer.space.small} />
+      <Text>Level: {snap.currentLevel}</Text>
       <Spread>
         <Text>Score: {snap.score}</Text>
-        <Text>Something here</Text>
+        <Text>Steps: {snap.steps}</Text>
       </Spread>
       <Spacer space={Spacer.space.small} />
       <Canvas onReady={onReady} />

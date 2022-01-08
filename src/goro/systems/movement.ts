@@ -105,6 +105,10 @@ export function createMovementSystem({tiles}: MovementProps): System {
         // If we're good to go, then go
         if (!hasCollided) {
           performMovement(id, pos, world)
+          emit({
+            type: GlobalEventType.TakeStep,
+            payload: null,
+          })
         }
       }
 
@@ -231,6 +235,10 @@ function handlePushEvent(
         type: GlobalEventType.FeedGoro,
         payload: null,
       })
+      emit({
+        type: GlobalEventType.TakeStep,
+        payload: null,
+      })
       return
     }
   }
@@ -250,6 +258,10 @@ function handlePushEvent(
 
   // If we got here then we'll all good to initiate the movement
   performMovement(target, pushPosition, world)
+  emit({
+    type: GlobalEventType.TakeStep,
+    payload: null,
+  })
   performMovement(
     origin,
     Point.of(

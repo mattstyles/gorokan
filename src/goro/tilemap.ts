@@ -12,6 +12,8 @@ export enum TileType {
 }
 
 export type Tile = number
+export type TileMapData = Tile[]
+export type CreateMapDataFn = () => TileMapData
 
 export class Tilemap {
   width: number
@@ -19,10 +21,19 @@ export class Tilemap {
   data: Tile[]
   pool: SpritePool
 
-  constructor({width, height}: {width: number; height: number}) {
+  constructor({
+    width,
+    height,
+    createMapData,
+  }: {
+    width: number
+    height: number
+    createMapData: CreateMapDataFn
+  }) {
     this.width = width
     this.height = height
-    this.data = generateDummyMap(width, height)
+    // this.data = generateDummyMap(width, height)
+    this.data = createMapData()
 
     // For now the map is always entirely in view
     this.pool = SpritePool.of({
@@ -74,6 +85,10 @@ export class Tilemap {
       }
     }
   }
+
+  setTileData(tiles: TileMapData) {
+    this.data = tiles
+  }
 }
 
 function getTileTexture(tile: TileType): Texture {
@@ -85,31 +100,4 @@ function getTileTexture(tile: TileType): Texture {
     case TileType.wall:
       return get('wall')
   }
-}
-
-function generateDummyMap(width: number, height: number) {
-  const data: Tile[] = []
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      // Perimeter wall
-      if (x === 0 || x === width - 1 || y === 0 || y === height - 1) {
-        data.push(TileType.wall)
-        continue
-      }
-
-      // Open section for testing
-      if (x > 0 && x < 12 && y > 0 && y < 8) {
-        data.push(TileType.floor)
-        continue
-      }
-
-      // if (Math.random() > 0.85) {
-      //   data.push(TileType.void)
-      //   continue
-      // }
-
-      data.push(Math.random() > 0.75 ? TileType.floor : TileType.wall)
-    }
-  }
-  return data
 }

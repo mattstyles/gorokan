@@ -11,11 +11,10 @@ import {state} from '../state/main'
 import {subscribe, GlobalEventType} from './events'
 import {Tilemap} from './tilemap'
 import {keyEvents} from './keyEvents'
+import {getLevelData} from './levels'
 import {createRenderingSystem} from './systems/rendering'
 import {createMovementSystem} from './systems/movement'
-import {createGoro} from './entities/goro'
 import {createYuji} from './entities/yuji'
-import {createFood} from './entities/food'
 import {Movement} from './components/position'
 
 export class Gorokan {
@@ -59,14 +58,6 @@ export class Gorokan {
     this.app.stage.addChild(container)
 
     /**
-     * Tilemap representation
-     */
-    this.tilemap = new Tilemap({width: tw, height: th})
-    this.tilemap.pool.attach(container)
-    // For now, in lieu of level loading, lets hard code the win condition
-    state.goroToFeed = 2
-
-    /**
      * Camera
      */
     const zoom = tileSize / textureSize
@@ -82,12 +73,26 @@ export class Gorokan {
      */
     this.world = createWorld()
 
-    createGoro({position: Point.of(6, 4), world: this.world})
-    createGoro({position: Point.of(4, 1), world: this.world})
-    const yuji = createYuji({position: Point.of(4, 4), world: this.world})
-    createFood({position: Point.of(5, 4), texture: 2, world: this.world})
-    createFood({position: Point.of(8, 4), texture: 5, world: this.world})
+    /**
+     * Load level
+     */
+    const {genTiles, genEntities, startPosition, goros} = getLevelData({
+      level: state.currentLevel,
+    })
+    this.tilemap = new Tilemap({
+      width: tw,
+      height: th,
+      createMapData: genTiles,
+    })
+    this.tilemap.pool.attach(container)
 
+    const yuji = createYuji({position: startPosition, world: this.world})
+    genEntities(this.world)
+    state.goroToFeed = goros
+
+    /**
+     * ECS System init
+     */
     this.systems.set(
       'rendering',
       createRenderingSystem({
@@ -104,12 +109,15 @@ export class Gorokan {
     this.app.ticker.add(this.render)
 
     subscribe(GlobalEventType.FeedGoro, () => {
-      state.score = state.score + 1
+      state.score = state.score + 10
       state.goroToFeed = state.goroToFeed - 1
 
       if (state.goroToFeed === 0) {
         console.log('yay, you win this level')
       }
+    })
+    subscribe(GlobalEventType.TakeStep, () => {
+      state.steps = state.steps + 1
     })
 
     /**
