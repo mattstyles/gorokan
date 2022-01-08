@@ -5,7 +5,7 @@ specifiers:
   '@types/react': ^17.0.37
   '@types/react-dom': ^17.0.11
   bitecs: ^0.3.34
-  classnames: ^2.3.1
+  clsx: ^1.1.1
   eventemitter3: ^4.0.7
   mathutil: ^4.1.0
   parcel: ^2.0.1
@@ -22,7 +22,7 @@ specifiers:
 dependencies:
   '@raid/streams': 6.1.1
   bitecs: 0.3.34
-  classnames: 2.3.1
+  clsx: 1.1.1
   eventemitter3: 4.0.7
   mathutil: 4.1.0
   pixi-holga: 1.0.0-alpha.2
@@ -1919,10 +1919,6 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /classnames/2.3.1:
-    resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
-    dev: false
-
   /cli-cursor/3.1.0:
     resolution: {integrity: sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==}
     engines: {node: '>=8'}
@@ -1944,6 +1940,11 @@ packages:
     resolution: {integrity: sha1-G39Ln1kfHo+DZwQBYANFoCiHQ18=}
     engines: {node: '>=0.8'}
     dev: true
+
+  /clsx/1.1.1:
+    resolution: {integrity: sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==}
+    engines: {node: '>=6'}
+    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}

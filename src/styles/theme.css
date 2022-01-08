@@ -20,6 +20,9 @@
   --line-height-2: 17px;
   --font-size-3: 20px;
   --line-height-3: 25px;
+  --font-size-4: 28px;
+  --line-height-5: 36px;
 
   /* Tokens */
+  --screen-width: 960px;
 }

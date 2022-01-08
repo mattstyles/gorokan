@@ -2,6 +2,9 @@ import * as React from 'react'
 import {useSnapshot} from 'valtio'
 
 import {Canvas} from './canvas'
+import {Page} from './page'
+import {Spread} from './layout'
+import {Spacer} from './spacer'
 import {Text} from './text'
 import {Gorokan} from '../goro/application'
 import {state} from '../state/main'
@@ -9,12 +12,15 @@ import {state} from '../state/main'
 export function App() {
   const snap = useSnapshot(state)
   return (
-    <>
-      <div>
+    <Page>
+      <Spacer space={Spacer.space.small} />
+      <Spread>
         <Text>Score: {snap.score}</Text>
-      </div>
+        <Text>Something here</Text>
+      </Spread>
+      <Spacer space={Spacer.space.small} />
       <Canvas onReady={onReady} />
-    </>
+    </Page>
   )
 }
 
