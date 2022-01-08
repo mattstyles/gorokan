@@ -5,6 +5,7 @@ export function level1(): LevelSpec {
     meta: {
       width: 7,
       height: 5,
+      text: 'A goro is a spirit, they need food to evolve.',
     },
     // prettier-ignore
     tiles: [

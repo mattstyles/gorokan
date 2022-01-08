@@ -8,10 +8,11 @@ import {TileType} from './tilemap'
 import {createGoro} from './entities/goro'
 import {createFood} from './entities/food'
 
-import {level1} from '../data/root'
+import {level1, level2} from '../data/root'
 
 const width = 32
 const height = 24
+const levels = [level1, level2]
 
 type LevelInput = {
   level: number
@@ -60,7 +61,7 @@ export function getLevelData({level}: LevelInput): LevelOutput {
         }
 
         // Double check on food numbers
-        if (entity.type >= 4 && entity.type <= 14) {
+        if (entity.type >= 4 && entity.type <= 13) {
           createFood({
             position: entity.position,
             texture: entity.texture,
@@ -75,8 +76,6 @@ export function getLevelData({level}: LevelInput): LevelOutput {
 }
 
 function getLevel(level: number): LevelSpec {
-  const levels = [level1]
-
   const levelSpec = levels[level - 1]()
 
   if (levelSpec == null) {
@@ -85,33 +84,6 @@ function getLevel(level: number): LevelSpec {
 
   return levelSpec
 }
-
-// function generateDummyMap(): TileMapData {
-//   const data: Tile[] = []
-//   for (let y = 0; y < height; y++) {
-//     for (let x = 0; x < width; x++) {
-//       // Perimeter wall
-//       if (x === 0 || x === width - 1 || y === 0 || y === height - 1) {
-//         data.push(TileType.wall)
-//         continue
-//       }
-//
-//       // Open section for testing
-//       if (x > 0 && x < 12 && y > 0 && y < 8) {
-//         data.push(TileType.floor)
-//         continue
-//       }
-//
-//       // if (Math.random() > 0.85) {
-//       //   data.push(TileType.void)
-//       //   continue
-//       // }
-//
-//       data.push(Math.random() > 0.75 ? TileType.floor : TileType.wall)
-//     }
-//   }
-//   return data
-// }
 
 type PadLevelInput = {
   lw: number
@@ -173,7 +145,7 @@ function generateEntityData(tiles: LevelSpec['tiles']): EntityData[] {
 
     entities.push({
       type: tile,
-      position: Point.of(index % width, (index / width) | 1),
+      position: Point.of(index % width, Math.floor(index / width)),
       texture: tile - 2,
     })
   })
