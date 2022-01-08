@@ -15,6 +15,7 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "parcel": "^2.0.1",
+    "postcss": "^8.2.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.5.4"
   },
@@ -22,6 +23,7 @@
     "@raid/streams": "^6.1.1",
     "bitecs": "^0.3.34",
     "classnames": "^2.3.1",
+    "eventemitter3": "^4.0.7",
     "mathutil": "^4.1.0",
     "pixi-holga": "^1.0.0-alpha.2",
     "pixi-spritepool": "^1.0.0",

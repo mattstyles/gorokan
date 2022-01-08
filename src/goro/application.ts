@@ -8,6 +8,7 @@ import {actions} from '@raid/streams/keys'
 import {addComponent, createWorld} from 'bitecs'
 
 import {state} from '../state/main'
+import {subscribe, GlobalEventType} from './events'
 import {Tilemap} from './tilemap'
 import {keyEvents} from './keyEvents'
 import {createRenderingSystem} from './systems/rendering'
@@ -62,6 +63,8 @@ export class Gorokan {
      */
     this.tilemap = new Tilemap({width: tw, height: th})
     this.tilemap.pool.attach(container)
+    // For now, in lieu of level loading, lets hard code the win condition
+    state.goroToFeed = 2
 
     /**
      * Camera
@@ -80,6 +83,7 @@ export class Gorokan {
     this.world = createWorld()
 
     createGoro({position: Point.of(6, 4), world: this.world})
+    createGoro({position: Point.of(4, 1), world: this.world})
     const yuji = createYuji({position: Point.of(4, 4), world: this.world})
     createFood({position: Point.of(5, 4), texture: 2, world: this.world})
     createFood({position: Point.of(8, 4), texture: 5, world: this.world})
@@ -98,6 +102,15 @@ export class Gorokan {
      * Events
      */
     this.app.ticker.add(this.render)
+
+    subscribe(GlobalEventType.FeedGoro, () => {
+      state.score = state.score + 1
+      state.goroToFeed = state.goroToFeed - 1
+
+      if (state.goroToFeed === 0) {
+        console.log('yay, you win this level')
+      }
+    })
 
     /**
      * Input

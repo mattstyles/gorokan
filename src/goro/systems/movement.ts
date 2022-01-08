@@ -8,6 +8,7 @@ import {
 } from 'bitecs'
 import {Point} from 'mathutil'
 
+import {emit, GlobalEventType} from '../events'
 import {Queue} from '../list'
 import {Tilemap, TileType} from '../tilemap'
 import {Position, Movement} from '../components/position'
@@ -16,7 +17,12 @@ import {Pushable} from '../components/pushable'
 import {Texture} from '../components/texture'
 import {Yuji} from '../components/types'
 import {Consumable, Consumer} from '../components/consumable'
-import {createGoroFulfilled} from '../entities/goro'
+
+/**
+ * This system is pretty bad as it handles movement, collisions, and the consequences of collision all imperitively.
+ * This would be better handled by creating events and then have other systems act as subscribers to perform the actions described by those events.
+ * In the name of progress, and as the scope of this app is small, we will continue to plough forward.
+ */
 
 enum EventTypes {
   Push,
@@ -204,9 +210,8 @@ function handlePushEvent(
     const id = entities[i]
     const pos = Point.of(Position.x[id], Position.y[id])
 
+    // Food is pushed into a goro
     if (pos.equals(pushPosition)) {
-      console.log('Pushed food into a Goro, yay')
-
       // For some reason removing and entering in the same tick does not work
       removeEntity(world, target)
 
@@ -222,6 +227,10 @@ function handlePushEvent(
         ),
         world
       )
+      emit({
+        type: GlobalEventType.FeedGoro,
+        payload: null,
+      })
       return
     }
   }

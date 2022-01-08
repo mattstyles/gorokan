@@ -28,29 +28,18 @@ export function createRenderingSystem({
   return defineSystem(
     (world: IWorld): IWorld => {
       const entering = onEnter(world)
-      if (entering.length) {
-        console.log(
-          'something renderable has entered the world',
-          entering.length
-        )
-      }
       for (let i = 0; i < entering.length; i++) {
         const entity = entering[i]
         const {id, sprite} = pool.get()
         Sprite.id[entity] = id
-        console.log('pool id', id)
         sprite.visible = true
         sprite.texture = get(Texture.id[entity])
         container.addChild(sprite)
       }
 
       const exiting = onExit(world)
-      if (exiting.length) {
-        console.log('something renderable has exited the world'), exiting.length
-      }
       for (let i = 0; i < exiting.length; i++) {
         const id = exiting[i]
-        console.log('pool id', id)
         const sprite = pool.find(id)
         pool.release(id)
         container.removeChild(sprite)
