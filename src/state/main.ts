@@ -15,6 +15,6 @@ export const state = proxy<MainState>({
   score: 0,
   goroToFeed: 0,
   steps: 0,
-  currentLevel: 2,
+  currentLevel: 3,
   levelText: '',
 })

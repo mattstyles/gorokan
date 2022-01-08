@@ -8,11 +8,11 @@ import {TileType} from './tilemap'
 import {createGoro} from './entities/goro'
 import {createFood} from './entities/food'
 
-import {level1, level2} from '../data/root'
+import {level1, level2, level3} from '../data/root'
 
 const width = 32
 const height = 24
-const levels = [level1, level2]
+const levels = [level1, level2, level3]
 
 type LevelInput = {
   level: number
@@ -47,7 +47,6 @@ export function getLevelData({level}: LevelInput): LevelOutput {
     genTiles: () => {
       return convertLevel(fullLevelData)
     },
-
     genEntities: (world) => {
       entityData.forEach((entity) => {
         // We've encoded start position as an entity, so ignore it
