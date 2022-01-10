@@ -21,5 +21,5 @@ export const state = proxy<MainState>({
   steps: 0,
   currentLevel: 3,
   levelText: '',
-  gameState: GameState.Game,
+  gameState: GameState.Menu,
 })

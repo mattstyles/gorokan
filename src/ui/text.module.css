@@ -4,3 +4,7 @@
   line-height: var(--line-height-3);
   font-family: monospace;
 }
+
+.center {
+  text-align: center;
+}

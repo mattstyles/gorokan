@@ -1,0 +1,31 @@
+.reset {
+  appearance: none;
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  position: relative;
+  vertical-align: middle;
+  text-decoration: none;
+
+  /* Horizontal fix for alignment of anchors */
+  textalign: center;
+
+  /* Firefox and Safari margin fix */
+  margin: 0;
+}
+
+.select {
+  background: var(--color-grey30);
+  color: var(--white);
+  padding: var(--space-3) var(--space-2);
+  border: var(--space-1) solid transparent;
+}
+.select:hover {
+  border-color: var(--color-white);
+}
+
+.select-focus {
+  border-color: var(--color-white);
+}

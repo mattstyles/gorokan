@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {useSnapshot} from 'valtio'
 
-import {Canvas} from './canvas'
-import {Page} from './page'
-import {Spread} from './layout'
-import {Spacer} from './spacer'
-import {Text} from './text'
+import {Canvas} from '../ui/canvas'
+import {Page} from '../ui/page'
+import {Spread} from '../ui/layout'
+import {Spacer} from '../ui/spacer'
+import {Text} from '../ui/text'
 import {Gorokan} from '../goro/application'
 import {state} from '../state/main'
 

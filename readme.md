@@ -14,12 +14,16 @@ This is a sokoban clone, but rather than crates and positions we use food and cr
 
 ## Technical features
 
-- React owns the UI
-- Valtio handles global state
-- The bulk of rendering is handled in a canvas element, using Pixi to do the heavy lifting
-- Entity-Component-System is implemented using BitECS.
-- We use a streaming interface to handle keyboard interactions, turning them into components and using the ECS to handle outcomes of keypresses.
+- [React](https://reactjs.org/) owns the UI
+- [Valtio](https://github.com/pmndrs/valtio) handles global state
+- The bulk of rendering is handled in a canvas element, using [Pixi](https://pixijs.com/) to do the heavy lifting
+- Entity-Component-System is implemented using [BitECS](https://github.com/NateTheGreatt/bitECS).
+- Keyboard interactions are handled via [raid/streams](https://github.com/mattstyles/raid/tree/main/packages/streams).
 - There is rudimentary event queue to handle mutations in the world.
+
+## Thanks
+
+Tile graphics are from [bountiful-bits](https://v3x3d.itch.io/bountiful-bits) and [bit-bonanza](https://v3x3d.itch.io/bit-bonanza). Thanks [\_V3X3D](https://twitter.com/_V3X3D).
 
 ## Notes
 

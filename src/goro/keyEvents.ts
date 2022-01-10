@@ -14,7 +14,9 @@ class KeyEvents {
 
   constructor() {
     this.keys = new Map<string, number>()
-    this.stream = keys({keys: this.keys})
+    this.stream = keys({
+      keys: this.keys,
+    })
 
     this.stream.observe((event: any) => {
       const observer = this.observers.peek()

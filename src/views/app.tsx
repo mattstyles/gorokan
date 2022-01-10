@@ -5,6 +5,7 @@ import {useSnapshot} from 'valtio'
 import {TinyComponentRouter} from 'tiny-component-router'
 
 import {Play} from './play'
+import {Menu} from './menu'
 import {state} from '../state/main'
 import {GameState} from '../state/gamestates'
 
@@ -19,7 +20,7 @@ export function App() {
         <Play />
       </View>
       <View match={GameState.Menu}>
-        <div>World</div>
+        <Menu />
       </View>
     </Router>
   )

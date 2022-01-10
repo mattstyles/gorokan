@@ -20,7 +20,7 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@raid/streams": "^6.1.1",
+    "@raid/streams": "^6.2.3",
     "bitecs": "^0.3.34",
     "clsx": "^1.1.1",
     "eventemitter3": "^4.0.7",

@@ -1,0 +1,23 @@
+.grid {
+  display: grid;
+}
+
+.grid-gap-small {
+  grid-gap: var(--space-2);
+}
+.grid-gap-medium {
+  grid-gap: var(--space-4);
+}
+.grid-gap-large {
+  grid-gap: var(--space-5);
+}
+
+.grid-col-3 {
+  grid-template-columns: repeat(3, auto);
+}
+.grid-col-5 {
+  grid-template-columns: repeat(5, auto);
+}
+.grid-col-10 {
+  grid-template-columns: repeat(10, auto);
+}
