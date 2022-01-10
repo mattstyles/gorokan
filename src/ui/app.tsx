@@ -1,36 +1,33 @@
+import type {RouteProps} from 'tiny-component-router'
+
 import * as React from 'react'
 import {useSnapshot} from 'valtio'
+import {TinyComponentRouter} from 'tiny-component-router'
 
-import {Canvas} from './canvas'
-import {Page} from './page'
-import {Spread} from './layout'
-import {Spacer} from './spacer'
-import {Text} from './text'
-import {Gorokan} from '../goro/application'
+import {Play} from './play'
 import {state} from '../state/main'
+import {GameState} from '../state/gamestates'
+
+class Router extends TinyComponentRouter<GameState> {}
 
 export function App() {
   const snap = useSnapshot(state)
+
   return (
-    <Page>
-      <Spacer space={Spacer.space.small} />
-      <Text>Level: {snap.currentLevel}</Text>
-      <Spread>
-        <Text>Score: {snap.score}</Text>
-        <Text>Steps: {snap.steps}</Text>
-      </Spread>
-      <Spacer space={Spacer.space.small} />
-      <Canvas onReady={onReady} />
-      <Spacer space={Spacer.space.small} />
-      {snap.levelText.length && <Text>{snap.levelText}</Text>}
-    </Page>
+    <Router match={snap.gameState}>
+      <View match={GameState.Game}>
+        <Play />
+      </View>
+      <View match={GameState.Menu}>
+        <div>World</div>
+      </View>
+    </Router>
   )
 }
 
-function onReady({canvas}: {canvas: HTMLCanvasElement}) {
-  const app = new Gorokan({canvas})
-
-  return () => {
-    app.release()
-  }
+interface ViewProps extends RouteProps<GameState> {
+  children: React.ReactNode
+}
+function View({children}: ViewProps) {
+  return <>{children}</>
 }
