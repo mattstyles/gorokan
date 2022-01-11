@@ -8,11 +8,10 @@ import {TileType} from './tilemap'
 import {createGoro} from './entities/goro'
 import {createFood} from './entities/food'
 
-import {level1, level2, level3} from '../data/root'
+import {levels} from '../data/root'
 
 const width = 32
 const height = 24
-const levels = [level1, level2, level3]
 
 type LevelInput = {
   level: number

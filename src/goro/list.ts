@@ -12,6 +12,10 @@ export class Stack<T> {
   peek(): T | null {
     return this.data[0] ?? null
   }
+
+  get size() {
+    return this.data.length
+  }
 }
 
 export class Queue<T> {
@@ -27,5 +31,9 @@ export class Queue<T> {
 
   peek(): T | null {
     return this.data[0] ?? null
+  }
+
+  get size() {
+    return this.data.length
   }
 }

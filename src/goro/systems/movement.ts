@@ -4,7 +4,7 @@ import {
   defineQuery,
   removeComponent,
   hasComponent,
-  removeEntity,
+  addComponent,
 } from 'bitecs'
 import {Point} from 'mathutil'
 
@@ -15,6 +15,7 @@ import {Position, Movement} from '../components/position'
 import {Collider} from '../components/collider'
 import {Pushable} from '../components/pushable'
 import {Texture} from '../components/texture'
+import {Destroy} from '../components/destroy'
 import {Yuji} from '../components/types'
 import {Consumable, Consumer} from '../components/consumable'
 
@@ -64,6 +65,7 @@ export function createMovementSystem({tiles}: MovementProps): System {
     (world: IWorld): IWorld => {
       const collisions = new Queue<GenericCollisionEvent>()
 
+      const colliders = collideQuery(world)
       const entities = query(world)
       for (let i = 0; i < entities.length; i++) {
         const id = entities[i]
@@ -83,7 +85,6 @@ export function createMovementSystem({tiles}: MovementProps): System {
         }
 
         // Check for collision with something pushable
-        const colliders = collideQuery(world)
         let hasCollided = false
         for (let i = 0; i < colliders.length; i++) {
           const pid = colliders[i]
@@ -113,8 +114,10 @@ export function createMovementSystem({tiles}: MovementProps): System {
       }
 
       // Drain the collision queue
-      const queue = refineCollisionQueue(collisions, world)
-      drainCollisionQueue(queue, world, tiles)
+      if (collisions.size) {
+        const queue = refineCollisionQueue(collisions, world)
+        drainCollisionQueue(queue, world, tiles)
+      }
 
       return world
     }
@@ -155,9 +158,10 @@ function refineCollisionQueue(
       continue
     }
 
+    // This never happens, we handle it all in the push event
     if (
-      hasComponent(world, Consumer, origin) &&
-      hasComponent(world, Consumable, target)
+      hasComponent(world, Consumer, target) &&
+      hasComponent(world, Consumable, origin)
     ) {
       refinedQueue.push({
         type: EventTypes.Consume,
@@ -196,6 +200,7 @@ function handlePushEvent(
   world: IWorld,
   tiles: Tilemap
 ) {
+  // origin is yuji. target is always a consumable (well technically a pushable, but its the same thing at the moment).
   const {origin, target, movement} = payload
   const pushPosition = Point.of(
     Position.x[target] + movement.x,
@@ -211,17 +216,19 @@ function handlePushEvent(
   const query = defineQuery([Consumer])
   const entities = query(world)
   for (let i = 0; i < entities.length; i++) {
-    const id = entities[i]
-    const pos = Point.of(Position.x[id], Position.y[id])
+    const consumer = entities[i]
+    const pos = Point.of(Position.x[consumer], Position.y[consumer])
 
     // Food is pushed into a goro
     if (pos.equals(pushPosition)) {
       // For some reason removing and entering in the same tick does not work
-      removeEntity(world, target)
+      // This is due to a problem with the rendering system, which is now fixed but we’ll leave things like this here, no problem with it.
+      // removeEntity(world, target)
+      addComponent(world, Destroy, target)
 
       // So rather than create a new entity, for now we'll adapt the existing one
-      Texture.id[id] = 1
-      removeComponent(world, Consumer, id)
+      Texture.id[consumer] = 1
+      removeComponent(world, Consumer, consumer)
 
       performMovement(
         origin,
@@ -258,6 +265,7 @@ function handlePushEvent(
 
   // If we got here then we'll all good to initiate the movement
   performMovement(target, pushPosition, world)
+
   emit({
     type: GlobalEventType.TakeStep,
     payload: null,

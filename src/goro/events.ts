@@ -24,4 +24,7 @@ export function emit(event: GlobalEvent) {
 // Ideally we want to type the callback to receive the shape of the payload for the specified type but I don't know how to do that with TS @TODO
 export function subscribe(type: GlobalEventType, cb: any) {
   events.on(type, cb)
+  return () => {
+    events.off(type, cb)
+  }
 }

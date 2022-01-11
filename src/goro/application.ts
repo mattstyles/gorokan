@@ -5,7 +5,14 @@ import {Camera} from 'pixi-holga'
 import {Point} from 'mathutil'
 import {ref} from 'valtio'
 import {actions} from '@raid/streams/keys'
-import {addComponent, createWorld, deleteWorld} from 'bitecs'
+import {
+  defineQuery,
+  addComponent,
+  createWorld,
+  deleteWorld,
+  resetWorld,
+  removeEntity,
+} from 'bitecs'
 
 import {GameState} from '../state/gamestates'
 import {state} from '../state/main'
@@ -15,8 +22,10 @@ import {keyEvents} from './keyEvents'
 import {getLevelData} from './levels'
 import {createRenderingSystem} from './systems/rendering'
 import {createMovementSystem} from './systems/movement'
+import {createRemovalSystem} from './systems/removal'
 import {createYuji} from './entities/yuji'
 import {Movement} from './components/position'
+import {Renderable} from './components/renderable'
 
 export class Gorokan {
   app: Application
@@ -49,7 +58,6 @@ export class Gorokan {
 
     state.app = ref(this.app)
     this.cleanup.add(() => {
-      console.log('disposing app')
       this.app.destroy(true, {
         children: true,
       })
@@ -74,6 +82,7 @@ export class Gorokan {
      */
     this.world = createWorld()
     this.cleanup.add(() => {
+      resetWorld(this.world)
       deleteWorld(this.world)
     })
 
@@ -113,23 +122,28 @@ export class Gorokan {
     )
 
     const movementSystem = createMovementSystem({tiles: this.tilemap})
+    const removalSystem = createRemovalSystem()
 
     /**
      * Events
      */
     this.app.ticker.add(this.render)
 
-    subscribe(GlobalEventType.FeedGoro, () => {
-      state.score = state.score + 10
-      state.goroToFeed = state.goroToFeed - 1
+    this.cleanup.add(
+      subscribe(GlobalEventType.FeedGoro, () => {
+        state.score = state.score + 10
+        state.goroToFeed = state.goroToFeed - 1
 
-      if (state.goroToFeed === 0) {
-        console.log('yay, you win this level')
-      }
-    })
-    subscribe(GlobalEventType.TakeStep, () => {
-      state.steps = state.steps + 1
-    })
+        if (state.goroToFeed === 0) {
+          console.log('yay, you win this level')
+        }
+      })
+    )
+    this.cleanup.add(
+      subscribe(GlobalEventType.TakeStep, () => {
+        state.steps = state.steps + 1
+      })
+    )
 
     /**
      * Input
@@ -140,28 +154,28 @@ export class Gorokan {
           addComponent(this.world, Movement, yuji)
           Movement.x[yuji] = -1
           Movement.y[yuji] = 0
-          movementSystem(this.world)
+          // movementSystem(this.world)
         }
 
         if (event.payload.key === '<right>') {
           addComponent(this.world, Movement, yuji)
           Movement.x[yuji] = 1
           Movement.y[yuji] = 0
-          movementSystem(this.world)
+          // movementSystem(this.world)
         }
 
         if (event.payload.key === '<up>') {
           addComponent(this.world, Movement, yuji)
           Movement.x[yuji] = 0
           Movement.y[yuji] = -1
-          movementSystem(this.world)
+          // movementSystem(this.world)
         }
 
         if (event.payload.key === '<down>') {
           addComponent(this.world, Movement, yuji)
           Movement.x[yuji] = 0
           Movement.y[yuji] = 1
-          movementSystem(this.world)
+          // movementSystem(this.world)
         }
 
         if (event.payload.key === '<escape>') {
@@ -169,6 +183,10 @@ export class Gorokan {
           state.gameState = GameState.Menu
         }
       }
+
+      // Move and handle removes
+      movementSystem(this.world)
+      removalSystem(this.world)
     })
     this.cleanup.add(dispose)
   }

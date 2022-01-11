@@ -5,7 +5,7 @@ export function level2(): LevelSpec {
     meta: {
       width: 9,
       height: 9,
-      text: 'Help every goro to evolve to progress.',
+      text: 'Help every goro to evolve.',
     },
     // prettier-ignore
     tiles: [

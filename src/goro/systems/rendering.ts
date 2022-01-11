@@ -40,8 +40,9 @@ export function createRenderingSystem({
       const exiting = onExit(world)
       for (let i = 0; i < exiting.length; i++) {
         const id = exiting[i]
-        const sprite = pool.find(id)
-        pool.release(id)
+        const spriteId = Sprite.id[id]
+        const sprite = pool.find(spriteId)
+        pool.release(spriteId)
         container.removeChild(sprite)
       }
 
