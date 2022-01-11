@@ -5,8 +5,9 @@ import {Camera} from 'pixi-holga'
 import {Point} from 'mathutil'
 import {ref} from 'valtio'
 import {actions} from '@raid/streams/keys'
-import {addComponent, createWorld} from 'bitecs'
+import {addComponent, createWorld, deleteWorld} from 'bitecs'
 
+import {GameState} from '../state/gamestates'
 import {state} from '../state/main'
 import {subscribe, GlobalEventType} from './events'
 import {Tilemap} from './tilemap'
@@ -72,6 +73,9 @@ export class Gorokan {
      * ECS
      */
     this.world = createWorld()
+    this.cleanup.add(() => {
+      deleteWorld(this.world)
+    })
 
     /**
      * Load level
@@ -158,6 +162,11 @@ export class Gorokan {
           Movement.x[yuji] = 0
           Movement.y[yuji] = 1
           movementSystem(this.world)
+        }
+
+        if (event.payload.key === '<escape>') {
+          // @TODO launch confirmation modal
+          state.gameState = GameState.Menu
         }
       }
     })

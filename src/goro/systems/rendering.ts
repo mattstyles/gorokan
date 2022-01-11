@@ -48,7 +48,8 @@ export function createRenderingSystem({
       const entities = query(world)
       for (let i = 0; i < entities.length; i++) {
         const id = entities[i]
-        const sprite = pool.find(id)
+        const spriteId = Sprite.id[id]
+        const sprite = pool.find(spriteId)
 
         const projection = camera.applyProjection(
           Point.of(Position.x[id], Position.y[id])
