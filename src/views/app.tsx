@@ -6,6 +6,7 @@ import {TinyComponentRouter} from 'tiny-component-router'
 
 import {Play} from './play'
 import {Menu} from './menu'
+import {WinModal} from '../ui/winModal'
 import {state} from '../state/main'
 import {GameState} from '../state/gamestates'
 
@@ -15,14 +16,17 @@ export function App() {
   const snap = useSnapshot(state)
 
   return (
-    <Router match={snap.gameState}>
-      <View match={GameState.Game}>
-        <Play />
-      </View>
-      <View match={GameState.Menu}>
-        <Menu />
-      </View>
-    </Router>
+    <>
+      <Router match={snap.gameState}>
+        <View match={GameState.Game}>
+          <Play key={snap.currentLevel} />
+        </View>
+        <View match={GameState.Menu}>
+          <Menu />
+        </View>
+      </Router>
+      {snap.showLevelWinModal && <WinModal />}
+    </>
   )
 }
 

@@ -10,7 +10,7 @@
   text-decoration: none;
 
   /* Horizontal fix for alignment of anchors */
-  textalign: center;
+  text-align: center;
 
   /* Firefox and Safari margin fix */
   margin: 0;
@@ -24,6 +24,10 @@
 }
 .select:hover {
   border-color: var(--color-white);
+}
+/* We manually handle focus states, although this is still a bit crap */
+.select:focus {
+  outline: none;
 }
 
 .select-focus {

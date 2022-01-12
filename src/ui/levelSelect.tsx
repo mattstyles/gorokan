@@ -15,11 +15,13 @@ import {GameState} from '../state/gamestates'
 type LevelSelectProps = {
   start?: number
   width?: GridColumns
+  onSelect?: (newLevel: number) => void
   end: number
 }
 export function LevelSelect({
   start = 1,
   width = Grid.Columns.five,
+  onSelect = () => {},
   end,
 }: LevelSelectProps) {
   const {index: currentIndex, onAction} = useKeys({
@@ -30,16 +32,19 @@ export function LevelSelect({
     if (onAction) {
       state.currentLevel = currentIndex + start
       state.gameState = GameState.Game
+      onSelect(state.currentLevel)
     }
   }, [onAction])
   const children = useMemo(() => {
     return new Array(end + 1 - start).fill(null).map((_, index) => {
       return (
         <button
+          autoFocus={false}
           key={index}
           onClick={() => {
             state.currentLevel = index + start
             state.gameState = GameState.Game
+            onSelect(state.currentLevel)
           }}
           className={cx(
             styles.reset,
@@ -95,7 +100,7 @@ function useKeys({width, total}: {width: number; total: number}) {
         }
       }
     })
-  })
+  }, [width, index])
 
   return {index, onAction}
 }

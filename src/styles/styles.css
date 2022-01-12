@@ -1,6 +1,8 @@
 @import 'reset.css';
 @import 'theme.css';
 
+@import 'npm:@reach/dialog/styles.css';
+
 .root {
   width: 100vw;
   height: 100vh;

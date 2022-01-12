@@ -5,14 +5,7 @@ import {Camera} from 'pixi-holga'
 import {Point} from 'mathutil'
 import {ref} from 'valtio'
 import {actions} from '@raid/streams/keys'
-import {
-  defineQuery,
-  addComponent,
-  createWorld,
-  deleteWorld,
-  resetWorld,
-  removeEntity,
-} from 'bitecs'
+import {addComponent, createWorld, deleteWorld, resetWorld} from 'bitecs'
 
 import {GameState} from '../state/gamestates'
 import {state} from '../state/main'
@@ -25,7 +18,6 @@ import {createMovementSystem} from './systems/movement'
 import {createRemovalSystem} from './systems/removal'
 import {createYuji} from './entities/yuji'
 import {Movement} from './components/position'
-import {Renderable} from './components/renderable'
 
 export class Gorokan {
   app: Application
@@ -135,7 +127,7 @@ export class Gorokan {
         state.goroToFeed = state.goroToFeed - 1
 
         if (state.goroToFeed === 0) {
-          console.log('yay, you win this level')
+          state.showLevelWinModal = true
         }
       })
     )
@@ -154,28 +146,24 @@ export class Gorokan {
           addComponent(this.world, Movement, yuji)
           Movement.x[yuji] = -1
           Movement.y[yuji] = 0
-          // movementSystem(this.world)
         }
 
         if (event.payload.key === '<right>') {
           addComponent(this.world, Movement, yuji)
           Movement.x[yuji] = 1
           Movement.y[yuji] = 0
-          // movementSystem(this.world)
         }
 
         if (event.payload.key === '<up>') {
           addComponent(this.world, Movement, yuji)
           Movement.x[yuji] = 0
           Movement.y[yuji] = -1
-          // movementSystem(this.world)
         }
 
         if (event.payload.key === '<down>') {
           addComponent(this.world, Movement, yuji)
           Movement.x[yuji] = 0
           Movement.y[yuji] = 1
-          // movementSystem(this.world)
         }
 
         if (event.payload.key === '<escape>') {

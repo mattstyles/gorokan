@@ -12,6 +12,7 @@ export type MainState = {
   currentLevel: number
   levelText: string
   gameState: GameState
+  showLevelWinModal: boolean
 }
 
 export const state = proxy<MainState>({
@@ -22,4 +23,5 @@ export const state = proxy<MainState>({
   currentLevel: 3,
   levelText: '',
   gameState: GameState.Menu,
+  showLevelWinModal: false,
 })
