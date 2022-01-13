@@ -128,7 +128,7 @@ export class Gorokan {
         state.goroToFeed = state.goroToFeed - 1
 
         if (state.goroToFeed === 0) {
-          state.levelProgress[state.currentLevel] = state.steps
+          state.levelProgress[state.currentLevel - 1] = state.steps
           state.showLevelWinModal = true
         }
       })

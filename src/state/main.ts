@@ -4,7 +4,7 @@ import {proxy} from 'valtio'
 
 import {GameState} from './gamestates'
 
-type stepsPerLevel = number
+export type StepsPerLevel = number
 export type MainState = {
   app: Application | null
   score: number
@@ -14,7 +14,7 @@ export type MainState = {
   levelText: string
   gameState: GameState
   showLevelWinModal: boolean
-  levelProgress: stepsPerLevel[]
+  levelProgress: StepsPerLevel[]
   totalNumLevels: number
 }
 
