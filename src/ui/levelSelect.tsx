@@ -57,7 +57,7 @@ export function LevelSelect({
             index === currentIndex && styles['select-focus']
           )}
         >
-          {snap.levelProgress[index + start] > 0 ? (
+          {snap.levelProgress[index + start - 1] > 0 ? (
             <Image size={25} ux={1} uy={0} src={tiles} />
           ) : (
             <Text>{start + index}</Text>
