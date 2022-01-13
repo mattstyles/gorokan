@@ -22,7 +22,7 @@ export function Play() {
       <Spacer space={Spacer.space.small} />
       <Canvas onReady={onReady} />
       <Spacer space={Spacer.space.small} />
-      {snap.levelText.length && <Text>{snap.levelText}</Text>}
+      {snap.levelText.length > 0 && <Text>{snap.levelText}</Text>}
     </Page>
   )
 }

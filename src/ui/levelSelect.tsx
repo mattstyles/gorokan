@@ -31,7 +31,7 @@ export function LevelSelect({
   const {index: currentIndex, onAction} = useKeys({
     width: 5,
     total: end - start,
-    initial: snap.currentLevel,
+    initial: snap.currentLevel >= 10 ? 9 : snap.currentLevel,
   })
   useEffect(() => {
     if (onAction) {
