@@ -4,6 +4,7 @@ import {proxy} from 'valtio'
 
 import {GameState} from './gamestates'
 
+type stepsPerLevel = number
 export type MainState = {
   app: Application | null
   score: number
@@ -13,6 +14,8 @@ export type MainState = {
   levelText: string
   gameState: GameState
   showLevelWinModal: boolean
+  levelProgress: stepsPerLevel[]
+  totalNumLevels: number
 }
 
 export const state = proxy<MainState>({
@@ -20,8 +23,10 @@ export const state = proxy<MainState>({
   score: 0,
   goroToFeed: 0,
   steps: 0,
-  currentLevel: 3,
+  currentLevel: 0,
   levelText: '',
   gameState: GameState.Menu,
   showLevelWinModal: false,
+  totalNumLevels: 10,
+  levelProgress: new Array(10).fill(0),
 })

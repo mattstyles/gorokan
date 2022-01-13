@@ -53,6 +53,7 @@ export class Gorokan {
       this.app.destroy(true, {
         children: true,
       })
+      state.steps = 0
     })
 
     const container = new Container()
@@ -127,6 +128,7 @@ export class Gorokan {
         state.goroToFeed = state.goroToFeed - 1
 
         if (state.goroToFeed === 0) {
+          state.levelProgress[state.currentLevel] = state.steps
           state.showLevelWinModal = true
         }
       })

@@ -2,12 +2,15 @@ import * as React from 'react'
 import {useState, useMemo, useEffect} from 'react'
 import cx from 'clsx'
 import {actions} from '@raid/streams/keys'
+import {useSnapshot} from 'valtio'
 
 import type {GridColumns} from './grid'
 
 import styles from './levelSelect.module.css'
+import tiles from '../assets/tiles.png'
 import {Grid} from './grid'
 import {Text} from './text'
+import {Image} from './image'
 import {keyEvents} from '../goro/keyEvents'
 import {state} from '../state/main'
 import {GameState} from '../state/gamestates'
@@ -24,9 +27,11 @@ export function LevelSelect({
   onSelect = () => {},
   end,
 }: LevelSelectProps) {
+  const snap = useSnapshot(state)
   const {index: currentIndex, onAction} = useKeys({
     width: 5,
     total: end - start,
+    initial: snap.currentLevel,
   })
   useEffect(() => {
     if (onAction) {
@@ -52,7 +57,11 @@ export function LevelSelect({
             index === currentIndex && styles['select-focus']
           )}
         >
-          <Text>{start + index}</Text>
+          {snap.levelProgress[index + start] > 0 ? (
+            <Image size={25} ux={1} uy={0} src={tiles} />
+          ) : (
+            <Text>{start + index}</Text>
+          )}
         </button>
       )
     })
@@ -65,8 +74,9 @@ export function LevelSelect({
   )
 }
 
-function useKeys({width, total}: {width: number; total: number}) {
-  const [index, setIndex] = useState(0)
+type KeyInput = {width: number; total: number; initial: number}
+function useKeys({width, total, initial}: KeyInput) {
+  const [index, setIndex] = useState(initial)
   const [onAction, setOnAction] = useState(false)
   useEffect(() => {
     return keyEvents.observe((event) => {

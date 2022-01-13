@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+}
+
+.image {
+  width: 10px;
+  height: 10px;
+  image-rendering: pixelated;
+  display: inline-block;
+}
